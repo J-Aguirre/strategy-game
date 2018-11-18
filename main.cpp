@@ -1,4 +1,5 @@
 #include "pong.hpp"
+#include "ball.hpp"
 
 int main()
 {

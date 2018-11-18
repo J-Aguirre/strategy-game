@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 
 #include "config.hpp"
+#include "ball.hpp"
 
 class Pong{
 
@@ -24,6 +25,8 @@ private:
 
 	sf::Music music;
 
+	Ball ball;
+
 };
 
 Pong::Pong(){
@@ -34,11 +37,11 @@ Pong::Pong(){
 	window.setVerticalSyncEnabled(true);
 
 	//Cargar background
-	texture_back.loadFromFile("image.png");
+	texture_back.loadFromFile("data/background.png");
 	background.setTexture(texture_back);
 
 	//Cargar musica
-	music.openFromFile("data/Aeris.ogg");
+	music.openFromFile("data/background.ogg");
 	music.setLoop(true);
 	music.play();
 }
@@ -54,7 +57,11 @@ void Pong::run(){
 				window.close();
 		}
 
+		ball.update(time);
+
 		window.draw(background);
+		window.draw(ball);
+
 		window.display();
 	}
 }
