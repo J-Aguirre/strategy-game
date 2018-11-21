@@ -12,7 +12,7 @@ public:
 	Ball();
 	~Ball(){};
 	
-	void update(sf::Time& delta);
+	void update(sf::Time& delta, sf::FloatRect p1, sf::FloatRect p2);
 	float getSpeedX() const;
 
 private:
@@ -41,7 +41,7 @@ Ball::Ball()
 	this->speed.y = 300.0f;
 }
 
-void Ball::update(sf::Time& delta)
+void Ball::update(sf::Time& delta, sf::FloatRect p1, sf::FloatRect p2)
 {
 	// Obtenemos los cuatro laterales de la bola
 	float left = this->getPosition().x - this->getOrigin().x;
@@ -63,6 +63,13 @@ void Ball::update(sf::Time& delta)
 	if ((top <= 0 && speed.y < 0) || (bottom >= HEIGHT && speed.y > 0))
 	{
 		this->speed.y *= -1;
+		this->sound.play();
+	}
+
+	// Por último comprobamos si ha chocado contra las palas
+	if (this->getGlobalBounds().intersects(p1) || this->getGlobalBounds().intersects(p2))
+	{
+		this->speed.x *= -1;
 		this->sound.play();
 	}
 	// Movemos la bola multiplicando la velocidad por el tiempo pasado

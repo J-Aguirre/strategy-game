@@ -6,6 +6,7 @@
 
 #include "config.hpp"
 #include "ball.hpp"
+#include "paddle.hpp"
 
 class Pong{
 
@@ -26,6 +27,8 @@ private:
 	sf::Music music;
 
 	Ball ball;
+	Paddle pad_player;
+	Paddle pad_ia;
 
 };
 
@@ -39,6 +42,9 @@ Pong::Pong(){
 	//Cargar background
 	texture_back.loadFromFile("data/background.png");
 	background.setTexture(texture_back);
+
+	pad_player.setPosition(40, HEIGHT/2);
+	pad_ia.setPosition(WIDTH - 40, HEIGHT/2);
 
 	//Cargar musica
 	music.openFromFile("data/background.ogg");
@@ -56,11 +62,15 @@ void Pong::run(){
 			if(event.type == sf::Event::Closed)
 				window.close();
 		}
-
-		ball.update(time);
+		
+		pad_player.updateHuman(time);
+		pad_ia.updateIA(time, ball);
+		ball.update(time, pad_player.getGlobalBounds(), pad_ia.getGlobalBounds());
 
 		window.draw(background);
 		window.draw(ball);
+		window.draw(pad_player);
+		window.draw(pad_ia);
 
 		window.display();
 	}
