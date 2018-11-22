@@ -7,6 +7,7 @@
 #include "config.hpp"
 #include "ball.hpp"
 #include "paddle.hpp"
+#include "score.hpp"
 
 class Pong{
 
@@ -29,6 +30,7 @@ private:
 	Ball ball;
 	Paddle pad_player;
 	Paddle pad_ia;
+	Score score;
 
 };
 
@@ -65,12 +67,13 @@ void Pong::run(){
 		
 		pad_player.updateHuman(time);
 		pad_ia.updateIA(time, ball);
-		ball.update(time, pad_player.getGlobalBounds(), pad_ia.getGlobalBounds());
+		ball.update(time, pad_player.getGlobalBounds(), pad_ia.getGlobalBounds(), score);
 
 		window.draw(background);
 		window.draw(ball);
 		window.draw(pad_player);
 		window.draw(pad_ia);
+		score.show(window);
 
 		window.display();
 	}

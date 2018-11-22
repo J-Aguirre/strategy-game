@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 
 #include "config.hpp"
+#include "score.hpp"
 
 class Ball : public sf::Sprite
 {
@@ -12,7 +13,7 @@ public:
 	Ball();
 	~Ball(){};
 	
-	void update(sf::Time& delta, sf::FloatRect p1, sf::FloatRect p2);
+	void update(sf::Time&, sf::FloatRect, sf::FloatRect, Score&);
 	float getSpeedX() const;
 
 private:
@@ -41,7 +42,7 @@ Ball::Ball()
 	this->speed.y = 300.0f;
 }
 
-void Ball::update(sf::Time& delta, sf::FloatRect p1, sf::FloatRect p2)
+void Ball::update(sf::Time& delta, sf::FloatRect p1, sf::FloatRect p2, Score& score)
 {
 	// Obtenemos los cuatro laterales de la bola
 	float left = this->getPosition().x - this->getOrigin().x;
@@ -54,11 +55,15 @@ void Ball::update(sf::Time& delta, sf::FloatRect p1, sf::FloatRect p2)
 	{
 		this->speed.x *= -1;
 		this->sound.play();
+		score.addPointIA();
+		this->setPosition(WIDTH/2.0f,HEIGHT/2.0f);
 	}
 	if (right >= WIDTH && speed.x > 0)
 	{
 		this->speed.x *= -1;
 		this->sound.play();
+		score.addPointPlayer();
+		this->setPosition(this->getLocalBounds().width/2.0f, this->getLocalBounds().height/2.0f);
 	}
 	if ((top <= 0 && speed.y < 0) || (bottom >= HEIGHT && speed.y > 0))
 	{
